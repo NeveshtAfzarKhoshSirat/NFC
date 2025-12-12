@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="fa">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>پیشگام چاپ | کارت ویزیت امید خواجه نوری</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.3/Vazirmatn.css">
+
+<style>
+/* --- تنظیمات رنگی و متغیرها --- */
+:root {
+    --dark-blue: #0A3C5C; /* آبی تیره */
+    --light-blue: #1DA1F2; /* آبی روشن */
+    --text-dark: #333;
+    --text-light: #fff;
+    --bg-light: #f0f8ff;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg-light);
+    font-family: 'Vazirmatn', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    direction: ltr;
+    text-align: left;
+    overflow: hidden; /* جلوگیری از اسکرول هنگام لودینگ */
+}
+
+/* --- استایل‌های لودینگ (Preloader) و Progress Bar --- */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--dark-blue);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* بهینه‌سازی: اطمینان از نمایش فوری در بالاترین سرعت */
+    transition: opacity 0.3s ease-out, visibility 0.3s ease-out; 
+}
+
+.loading-text {
+    color: var(--text-light);
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+.progress-container {
+    width: 250px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%; /* شروع از صفر */
+    background: var(--light-blue);
+    /* حالت انتقال خطی برای پر شدن نرم */
+    transition: width 0.05s linear; 
+}
+
+/* کلاس برای مخفی کردن لودر */
+.loaded #preloader {
+    opacity: 0;
+    visibility: hidden;
+}
+.loaded body {
+    overflow: auto;
+}
+
+/* --- استایل‌های اصلی کارت --- */
+.card {
+    width: 92%;
+    max-width: 400px;
+    background: var(--text-light);    
+    border-radius: 25px;    
+    padding: 30px 25px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    border: 1px solid #d4e3f2;
+    text-align: left;
+    /* انیمیشن ورود کارت بعد از لود */
+    opacity: 0; 
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.loaded .card {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+h1 {
+    margin: 0 0 5px;
+    font-size: 28px;
+    color: var(--dark-blue);
+    text-align: center;    
+    font-weight: 900;
+    direction: rtl;    
+}    
+h2 {
+    margin: 0 0 25px;
+    font-size: 16px;
+    color: var(--light-blue);
+    font-weight: 500;
+    text-align: center;
+    direction: rtl;    
+}    
+
+/* کادر اطلاعات عمومی */
+.general-info {
+    padding: 15px;
+    background: var(--dark-blue);    
+    border-radius: 15px;
+    margin-bottom: 25px;
+    color: var(--text-light);
+    direction: rtl;
+    text-align: right;
+}
+.general-info strong {
+    font-size: 16px;
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+.contact-item {
+    padding: 5px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+}
+.contact-item:last-child {
+    border-bottom: none;
+}
+.tel-label {
+    font-size: 14px;
+    font-weight: 300;
+}
+.ltr-text {
+    direction: ltr;
+    font-weight: bold;    
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 16px;
+}
+
+/* لینک‌ها */
+.links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 15px;
+}
+.links a {
+    padding: 10px;
+    font-size: 15px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text-light);
+    font-weight: bold;
+    text-align: center;
+    transition: all 0.3s;
+    background: var(--light-blue);
+    direction: rtl;
+}
+.links a:first-child { background: #879ab5; }    
+.links a:hover { opacity: 0.8; }
+
+/* بخش پروفایل فردی */
+.person-group {
+    border: 1px solid #e0e0e0;
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background: #fcfcfc;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    border-right: 4px solid var(--dark-blue);
+}
+.person-title {
+    font-size: 18px; 
+    font-weight: 700;
+    color: var(--text-dark);
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    text-align: center;
+    direction: rtl;
+}
+.person-title span:first-child {
+    color: var(--dark-blue);
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+.person-title span:last-child {
+    font-weight: 500;
+    color: #666;
+    font-size: 14px;
+}
+
+.mobile-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 5px;
+    direction: rtl;
+    border-top: 1px solid #eee;
+    margin-top: 5px;
+    padding-top: 10px;
+}
+.mobile-line > span {
+    font-size: 14px;
+    color: #666;
+}
+.mobile-info {
+    display: flex;
+    align-items: center;
+    direction: ltr;
+}
+.mobile-number {
+    font-size: 18px;
+    color: var(--text-dark);
+    margin-left: 10px;
+    font-weight: 800;
+}
+
+/* دکمه ذخیره */
+.save-individual-btn {
+    background: var(--light-blue);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 15px; 
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    font-family: 'Vazirmatn', sans-serif;
+}
+.save-individual-btn:hover {
+    background: #008cd6;
+}
+.save-individual-btn i {
+    margin-right: 5px;
+}
+
+</style>
+</head>
+<body>
+
+<div id="preloader">
+    <div class="loading-text">پیشگام چاپ</div>
+    <div class="progress-container">
+        <div id="progressBar" class="progress-bar"></div>
+    </div>
+</div>
+
+<div class="card">
+  <h1>شرکت پیشگام چاپ</h1>
+  <h2>تولید کننده لیبل پشت چسب دار رول</h2>
+  
+  <div class="general-info">
+      <strong>اطلاعات تماس و لینک‌ها:</strong>
+      <div class="contact-item">
+          <span class="tel-label">تلفن دفتر ۱:</span>
+          <a href="tel:+982146812806" class="ltr-text">021 4681 2806</a>
+      </div>
+      <div class="contact-item">
+          <span class="tel-label">تلفن دفتر ۲:</span>
+          <a href="tel:+982146812807" class="ltr-text">021 4681 2807</a>
+      </div>
+      <div class="links">
+        <a href="http://www.pishgamchap.com" target="_blank">🌐 وبسایت</a>
+        <a href="https://www.instagram.com/pishgam.chap" target="_blank" style="background:#E1306C;">📸 اینستاگرام</a>
+      </div>
+  </div>
+
+  <div class="person-group">
+      <div class="person-title">
+          <span>امید خواجه نوری</span>
+          <span>فروش</span>
+      </div>
+      <div class="mobile-line">
+          <span>موبایل:</span>
+          <div class="mobile-info">
+            <a href="tel:+989126543210" class="ltr-text mobile-number">0912 654 3210</a>
+          </div>
+      </div>
+      <div style="margin-top: 15px; display: flex; justify-content: center;">
+        <button class="save-individual-btn" data-person="omidkhajenoori">
+            💾 ذخیره در مخاطبین
+        </button>
+      </div>
+  </div>
+
+</div>
+
+<script>
+// اطلاعات ثابت شرکت
+const companyInfo = {
+    ORG: 'پیشگام چاپ',
+    OFFICE_TEL: '+982146812806',
+    WEBSITE: 'http://www.pishgamchap.com',
+    INSTAGRAM: 'https://www.instagram.com/pishgam.chap',
+};
+
+// داده‌های فرد (امید خواجه نوری)
+const contactsData = {
+    omidkhajenoori: {
+        N: 'خواجه نوری;امید;;;',
+        FN: 'امید خواجه نوری - فروش پیشگام چاپ',
+        TITLE: 'فروش',
+        TEL: '+989126543210',
+        filename: 'OmidKhajenoori_PishgamChap.vcf'
+    }
+};
+
+// تابع ساخت و دانلود VCF
+function downloadVcf(personKey) {
+    const data = contactsData[personKey];
+    const company = companyInfo;
+    
+    const vcard =    
+`BEGIN:VCARD
+VERSION:3.0
+N:${data.N}
+FN:${data.FN}
+ORG:${company.ORG}
+TITLE:${data.TITLE}
+TEL;TYPE=CELL;TYPE=PREF:${data.TEL}
+TEL;TYPE=WORK;TYPE=VOICE:${company.OFFICE_TEL}
+URL;TYPE=WEBSITE:${company.WEBSITE}
+X-SOCIALPROFILE;TYPE=instagram:${company.INSTAGRAM}
+END:VCARD`;
+
+    const blob = new Blob([vcard], {type:'text/vcard;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = data.filename;
+    document.body.appendChild(a);
+    a.click();
+    
+    // بدون alert برای تجربه کاربری روان‌تر
+    setTimeout(() => {
+        URL.revokeObjectURL(url);
+    }, 500);
+}
+
+// مدیریت لودینگ با Progress Bar
+function startProgressLoading() {
+    const progressBar = document.getElementById('progressBar');
+    let progress = 0;
+    const intervalTime = 15; // هر 15 میلی‌ثانیه
+    const increment = 1; // 1% در هر گام
+    
+    // هدف: 100 گام (100 * 15ms = 1500ms یا 1.5 ثانیه)
+    const loadingInterval = setInterval(() => {
+        if (progress < 100) {
+            progress += increment;
+            progressBar.style.width = progress + '%';
+        } else {
+            clearInterval(loadingInterval);
+            // اطمینان از 100%
+            progressBar.style.width = '100%'; 
+            
+            // تأخیر کوتاه برای نمایش 100% قبل از محو شدن
+            setTimeout(() => {
+                document.documentElement.classList.add('loaded');
+            }, 100); 
+        }
+    }, intervalTime);
+}
+
+// شروع انیمیشن به محض آماده شدن ساختار صفحه (DOMContentLoaded)
+document.addEventListener('DOMContentLoaded', startProgressLoading);
+
+// گوش دادن به کلیک دکمه ذخیره
+document.querySelector('.save-individual-btn').addEventListener('click', (e) => {
+    const personKey = e.currentTarget.getAttribute('data-person');
+    if (personKey) {
+        downloadVcf(personKey);
+    }
+});
+</script>
+
+</body>
+</html>
