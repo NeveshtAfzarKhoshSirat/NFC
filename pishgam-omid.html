@@ -43,7 +43,6 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /* بهینه‌سازی: اطمینان از نمایش فوری در بالاترین سرعت */
     transition: opacity 0.3s ease-out, visibility 0.3s ease-out; 
 }
 
@@ -74,7 +73,6 @@ body {
     height: 100%;
     width: 0%; /* شروع از صفر */
     background: var(--light-blue);
-    /* حالت انتقال خطی برای پر شدن نرم */
     transition: width 0.05s linear; 
 }
 
@@ -97,7 +95,6 @@ body {
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
     border: 1px solid #d4e3f2;
     text-align: left;
-    /* انیمیشن ورود کارت بعد از لود */
     opacity: 0; 
     transform: translateY(20px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
@@ -305,7 +302,7 @@ h2 {
       <div class="mobile-line">
           <span>موبایل:</span>
           <div class="mobile-info">
-            <a href="tel:+989126543210" class="ltr-text mobile-number">0912 654 3210</a>
+            <a href="tel:+989121122868" class="ltr-text mobile-number">0912 112 2868</a>
           </div>
       </div>
       <div style="margin-top: 15px; display: flex; justify-content: center;">
@@ -332,7 +329,8 @@ const contactsData = {
         N: 'خواجه نوری;امید;;;',
         FN: 'امید خواجه نوری - فروش پیشگام چاپ',
         TITLE: 'فروش',
-        TEL: '+989126543210',
+        // شماره اصلاح شده
+        TEL: '+989121122868',
         filename: 'OmidKhajenoori_PishgamChap.vcf'
     }
 };
@@ -363,7 +361,6 @@ END:VCARD`;
     document.body.appendChild(a);
     a.click();
     
-    // بدون alert برای تجربه کاربری روان‌تر
     setTimeout(() => {
         URL.revokeObjectURL(url);
     }, 500);
