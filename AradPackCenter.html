@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="fa">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>آراد پک سنتر | گارانتی چاپ</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.3/Vazirmatn.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+/* --- ۱. متغیرها و تنظیمات پایه --- */
+:root {
+    --primary-blue: #005a8d;
+    --dark-blue: #004269;
+    --accent-red: #d9534f;
+    --bg-light: #f4f7f6;
+    --card-bg: #ffffff;
+    --text-dark: #333333;
+    --text-grey: #666666;
+    --card-radius: 25px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Vazirmatn', sans-serif;
+    background-color: var(--bg-light);
+    background-image: radial-gradient(#005a8d 0.5px, transparent 0.5px), radial-gradient(#005a8d 0.5px, var(--bg-light) 0.5px);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    direction: rtl;
+    overflow: hidden; /* برای زمان لودینگ */
+}
+
+/* --- ۲. لودینگ (Preloader) --- */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--primary-blue);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.loader-content {
+    text-align: center;
+    color: white;
+}
+
+.loader-title {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loaded #preloader {
+    opacity: 0;
+    visibility: hidden;
+}
+.loaded body {
+    overflow-y: auto;
+    padding: 20px;
+}
+
+/* --- ۳. بدنه اصلی کارت --- */
+.card {
+    width: 100%;
+    max-width: 400px;
+    background: var(--card-bg);
+    border-radius: var(--card-radius);
+    padding: 40px 20px 30px 20px;
+    box-shadow: 0 15px 35px rgba(0,90,141, 0.15);
+    border-top: 6px solid var(--primary-blue);
+    position: relative;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.loaded .card {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* هدر کارت */
+.header-section {
+    text-align: center;
+    margin-bottom: 25px;
+}
+.header-section h1 {
+    color: var(--primary-blue);
+    font-size: 26px;
+    margin: 0;
+    font-weight: 900;
+}
+.header-section h2 {
+    color: var(--accent-red);
+    font-size: 14px;
+    margin: 5px 0 0;
+    font-weight: 600;
+    background: rgba(217, 83, 79, 0.1);
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+/* باکس گارانتی (نقطه تمایز) */
+.guarantee-box {
+    background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+    border: 2px dashed var(--accent-red);
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 25px;
+    position: relative;
+}
+.guarantee-title {
+    color: var(--primary-blue);
+    font-weight: 800;
+    font-size: 16px;
+    display: block;
+    margin-bottom: 8px;
+}
+.guarantee-text {
+    color: var(--text-dark);
+    font-size: 13px;
+    line-height: 1.8;
+}
+.guarantee-icon {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent-red);
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+/* لیست تماس‌ها */
+.contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.contact-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    transition: 0.2s;
+    border: 1px solid #eee;
+}
+.contact-row:hover {
+    background: white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border-color: var(--primary-blue);
+    transform: translateY(-2px);
+}
+.c-label {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--text-grey);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.c-value {
+    font-family: 'Vazirmatn', sans-serif;
+    direction: ltr;
+    font-weight: 700;
+    color: var(--primary-blue);
+    text-decoration: none;
+    font-size: 15px;
+}
+
+/* شبکه‌های اجتماعی */
+.social-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 25px;
+}
+.social-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border: 1px solid #eee;
+    padding: 10px 5px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--text-dark);
+    transition: 0.2s;
+    gap: 5px;
+}
+.social-item i {
+    font-size: 20px;
+    transition: 0.2s;
+}
+.social-item span {
+    font-size: 11px;
+    font-weight: bold;
+}
+.social-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+.s-whatsapp i { color: #25D366; }
+.s-telegram i { color: #2AABEE; }
+.s-insta i { color: #E1306C; }
+.s-web i { color: var(--primary-blue); }
+
+/* لیست خدمات */
+.services-section {
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+    margin-bottom: 25px;
+}
+.services-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--primary-blue);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.services-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.services-list li {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 8px;
+    padding-right: 20px;
+    position: relative;
+    line-height: 1.6;
+}
+.services-list li::before {
+    content: '\f00c'; /* FontAwesome check */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 0;
+    top: 2px;
+    color: var(--primary-blue);
+    font-size: 12px;
+}
+
+/* دکمه ذخیره */
+.save-btn {
+    width: 100%;
+    background: linear-gradient(45deg, #005a8d, #0077b6);
+    color: white;
+    border: none;
+    padding: 18px;
+    border-radius: 15px;
+    font-family: 'Vazirmatn', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(0, 90, 141, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.save-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 25px rgba(0, 90, 141, 0.4);
+}
+.save-btn:active {
+    transform: scale(0.98);
+}
+
+.footer {
+    text-align: center;
+    font-size: 12px;
+    color: #999;
+    margin-top: 20px;
+}
+
+</style>
+</head>
+<body>
+
+<div id="preloader">
+    <div class="loader-content">
+        <div class="loader-title">ARAD PACK CENTER</div>
+        <div class="spinner"></div>
+    </div>
+</div>
+
+<div class="card">
+    
+    <div class="header-section">
+        <h1>آراد پک سنتر</h1>
+        <h2>مجتمع چاپ و بسته بندی</h2>
+    </div>
+
+    <div class="guarantee-box">
+        <div class="guarantee-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        <span class="guarantee-title">گارانتی بی قید و شرط چاپ</span>
+        <div class="guarantee-text">
+            باورتون میشه تمام کارهامون گارانتی چاپ داره؟ اگر یک در هزار سفارشتون مشکل داشت، بدون هزینه دوباره تولید میشه.
+        </div>
+    </div>
+
+    <div class="contact-list">
+        <a href="tel:+982188394570" class="contact-row">
+            <span class="c-label"><i class="fa-solid fa-phone-office"></i> دفتر مرکزی</span>
+            <span class="c-value">021 8839 4570</span>
+        </a>
+        <a href="tel:+989122241372" class="contact-row">
+            <span class="c-label"><i class="fa-brands fa-whatsapp"></i> واتساپ / همراه</span>
+            <span class="c-value">0912 224 1372</span>
+        </a>
+        <a href="tel:+989904222214" class="contact-row">
+            <span class="c-label"><i class="fa-solid fa-mobile-screen"></i> همراه دوم</span>
+            <span class="c-value">0990 422 2214</span>
+        </a>
+    </div>
+
+    <div class="social-grid">
+        <a href="https://wa.me/989122241372" target="_blank" class="social-item s-whatsapp">
+            <i class="fa-brands fa-whatsapp"></i>
+            <span>واتساپ</span>
+        </a>
+        <a href="https://t.me/aradpackcenter" target="_blank" class="social-item s-telegram">
+            <i class="fa-brands fa-telegram"></i>
+            <span>تلگرام</span>
+        </a>
+        <a href="https://www.instagram.com/aradpackcenter" target="_blank" class="social-item s-insta">
+            <i class="fa-brands fa-instagram"></i>
+            <span>اینستاگرام</span>
+        </a>
+        <a href="http://www.aradpackcenter.com" target="_blank" class="social-item s-web">
+            <i class="fa-solid fa-globe"></i>
+            <span>وبسایت</span>
+        </a>
+    </div>
+
+    <div class="services-section">
+        <div class="services-title"><i class="fa-solid fa-list-check"></i> خدمات ما</div>
+        <ul class="services-list">
+            <li>تولید جعبه و کارتن (غذایی، آرایشی و...)</li>
+            <li>تولید تخصصی لیبل پشت چسب‌دار</li>
+            <li>ساخت کلیشه (۱.۱۴ تا ۶ میل) با دستگاه پیشرفته</li>
+            <li>غرفه‌سازی نمایشگاه (داخلی و بین‌المللی)</li>
+            <li>تولید ساک دستی دوست‌دار محیط زیست</li>
+        </ul>
+    </div>
+
+    <button class="save-btn" onclick="downloadVcf()">
+        <i class="fa-solid fa-user-plus"></i>
+        <span>ذخیره در مخاطبین</span>
+    </button>
+    
+    <div class="footer">Arad Pack Center | Printing & Packaging</div>
+</div>
+
+<script>
+// --- تنظیمات اطلاعات مخاطب ---
+// نام و نام خانوادگی شخص مورد نظر را در دو خط زیر تغییر دهید
+const contactInfo = {
+    firstName: "مدیریت",   // نام (مثلا: علی)
+    lastName: "آراد پک سنتر", // نام خانوادگی (مثلا: رضایی - آراد پک)
+    org: "مجتمع چاپ آراد پک سنتر",
+    title: "تولید کننده لیبل و جعبه",
+    phones: [
+        { type: "CELL", number: "+989122241372" }, // شماره اصلی
+        { type: "CELL", number: "+989904222214" }, // شماره دوم
+        { type: "WORK", number: "+982188394570" }, // دفتر
+        { type: "WORK", number: "+982188394596" }  // دفتر ۲
+    ],
+    website: "http://www.aradpackcenter.com",
+    instagram: "https://www.instagram.com/aradpackcenter",
+    telegram: "https://t.me/aradpackcenter",
+    note: "گارانتی بی قید و شرط چاپ | تولید جعبه، لیبل و کلیشه"
+};
+
+function downloadVcf() {
+    // ساخت رشته تلفن‌ها
+    let telString = "";
+    contactInfo.phones.forEach(p => {
+        telString += `TEL;TYPE=${p.type}:${p.number}\n`;
+    });
+
+    // ساختار استاندارد VCF
+    let vcard = `BEGIN:VCARD
+VERSION:3.0
+N:${contactInfo.lastName};${contactInfo.firstName};;;
+FN:${contactInfo.firstName} ${contactInfo.lastName}
+ORG:${contactInfo.org}
+TITLE:${contactInfo.title}
+${telString}URL;TYPE=WEBSITE:${contactInfo.website}
+X-SOCIALPROFILE;TYPE=INSTAGRAM:${contactInfo.instagram}
+X-SOCIALPROFILE;TYPE=TELEGRAM:${contactInfo.telegram}
+NOTE;CHARSET=UTF-8:${contactInfo.note}
+END:VCARD`;
+
+    const blob = new Blob([vcard], {type: 'text/vcard;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    // نام فایل دانلودی
+    link.download = `AradPack_${contactInfo.lastName}.vcf`;
+    document.body.appendChild(link);
+    link.click();
+    
+    setTimeout(() => { document.body.removeChild(link); URL.revokeObjectURL(url); }, 500);
+}
+
+// مدیریت لودینگ
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        document.documentElement.classList.add('loaded');
+    }, 1500); // 1.5 ثانیه لودینگ نمادین
+});
+</script>
+
+</body>
+</html>
