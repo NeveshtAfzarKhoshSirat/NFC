@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Junior Gaming Center | Roham</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.3/Vazirmatn.css">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+:root {
+    --cs-orange: #de9b35; /* رنگ معروف لوگوی کانتر */
+    --cs-blue: #5d79ae;   /* رنگ CT */
+    --bg-dark: #0b0f12;
+    --hud-bg: rgba(20, 20, 25, 0.9);
+    --neon-green: #00ff00;
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Vazirmatn', sans-serif;
+    background-color: var(--bg-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+    color: white;
+}
+
+/* --- پس‌زمینه متحرک گیمی --- */
+.bg-animation {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -1;
+    background: 
+        linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+        repeating-linear-gradient(0deg, transparent, transparent 1px, #222 1px, #222 2px);
+    background-size: 100% 4px;
+}
+
+/* افکت دود متحرک */
+.fog {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(93, 121, 174, 0.15) 0%, transparent 60%);
+    animation: fogMove 10s infinite alternate;
+}
+
+@keyframes fogMove {
+    0% { transform: translate(-20%, -20%); }
+    100% { transform: translate(0%, 0%); }
+}
+
+/* --- لودینگ اسنایپر --- */
+#preloader {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #000;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s;
+}
+
+.crosshair {
+    width: 60px;
+    height: 60px;
+    border: 2px solid var(--cs-orange);
+    border-radius: 50%;
+    position: relative;
+    animation: scopeIn 1s ease-out forwards;
+}
+.crosshair::after, .crosshair::before {
+    content: ''; position: absolute; background: var(--cs-orange);
+}
+.crosshair::after { width: 100%; height: 1px; top: 50%; left: 0; }
+.crosshair::before { height: 100%; width: 1px; left: 50%; top: 0; }
+
+.loading-text {
+    margin-top: 20px;
+    font-family: 'Orbitron', sans-serif;
+    color: var(--cs-orange);
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+
+@keyframes scopeIn { 0% { transform: scale(5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+/* --- کارت اصلی (HUD) --- */
+.card {
+    width: 90%;
+    max-width: 380px;
+    background: var(--hud-bg);
+    border: 1px solid #444;
+    border-top: 4px solid var(--cs-orange);
+    /* کلیپ‌پت برای ایجاد گوشه‌های بریده شده مثل منوی بازی */
+    clip-path: polygon(
+        0 0, 100% 0, 
+        100% 90%, 90% 100%, 
+        0 100%
+    );
+    padding: 30px 20px 40px;
+    position: relative;
+    text-align: center;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.5s ease;
+    box-shadow: 0 0 30px rgba(222, 155, 53, 0.15);
+}
+
+.card.active { opacity: 1; transform: scale(1); }
+
+/* عکس پروفایل */
+.profile-wrapper {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
+}
+
+.profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* قاب شش ضلعی */
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    background: #333;
+    border: 2px solid var(--cs-orange); /* این بوردر روی کلیپ‌پت دیده نمیشه پس با باکس شدو فیک میزنیم */
+    filter: sepia(20%) contrast(110%);
+}
+
+.rank-badge {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: black;
+    color: var(--cs-orange);
+    padding: 2px 10px;
+    font-size: 10px;
+    font-family: 'Orbitron', sans-serif;
+    border: 1px solid var(--cs-orange);
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+/* عناوین */
+.gamernet-title {
+    font-family: 'Orbitron', sans-serif; /* فونت انگلیسی برای اسم گیم نت */
+    font-weight: 900;
+    font-size: 20px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    position: relative;
+    display: inline-block;
+}
+
+/* افکت گلیچ متن */
+.gamernet-title::before {
+    content: attr(data-text);
+    position: absolute;
+    left: -2px; text-shadow: 1px 0 blue; top:0; color:white; background:var(--hud-bg); overflow:hidden; clip:rect(0,900px,0,0); animation:noise-anim-2 3s infinite linear alternate-reverse;
+}
+
+@keyframes noise-anim-2 {
+    0% { clip: rect(12px, 9999px, 3px, 0); }
+    5% { clip: rect(34px, 9999px, 11px, 0); }
+    10% { clip: rect(2px, 9999px, 83px, 0); }
+    100% { clip: rect(0, 9999px, 0, 0); }
+}
+
+.manager-name {
+    color: #aaa;
+    font-size: 16px;
+    margin-bottom: 25px;
+    border-bottom: 1px dashed #444;
+    padding-bottom: 15px;
+    display: inline-block;
+}
+
+/* دکمه‌ها */
+.btn-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    background: rgba(255,255,255,0.05);
+    color: white;
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: 0.3s;
+    font-family: 'Vazirmatn', sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+/* افکت هاور دکمه‌ها شبیه انتخاب منو در بازی */
+.btn:hover {
+    background: rgba(222, 155, 53, 0.1);
+    border-left: 3px solid var(--cs-orange);
+    padding-right: 25px; /* حرکت متن */
+}
+
+.btn i { font-size: 20px; width: 30px; text-align: center; }
+
+.btn-insta { border-color: #E1306C; }
+.btn-insta:hover { background: rgba(225, 48, 108, 0.1); }
+
+.btn-tele { border-color: #2AABEE; }
+.btn-tele:hover { background: rgba(42, 171, 238, 0.1); }
+
+.btn-whats { border-color: #25D366; }
+.btn-whats:hover { background: rgba(37, 211, 102, 0.1); }
+
+/* دکمه سیو کانتکت (بمب C4) */
+.save-btn {
+    margin-top: 15px;
+    background: linear-gradient(45deg, #800000, #a00000);
+    border: 1px solid #ff4444;
+    color: white;
+    padding: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-family: 'Orbitron', sans-serif; /* فونت دیجیتالی */
+    letter-spacing: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    animation: bombPulse 2s infinite;
+}
+
+@keyframes bombPulse {
+    0% { box-shadow: 0 0 5px rgba(255,0,0,0.2); }
+    50% { box-shadow: 0 0 20px rgba(255,0,0,0.6); border-color: #ff0000; }
+    100% { box-shadow: 0 0 5px rgba(255,0,0,0.2); }
+}
+
+/* فوتر */
+.status-bar {
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: #666;
+    font-family: 'Orbitron', sans-serif;
+}
+
+</style>
+</head>
+<body>
+
+    <div class="bg-animation">
+        <div class="fog"></div>
+    </div>
+
+    <div id="preloader">
+        <div class="crosshair"></div>
+        <div class="loading-text">CONNECTING TO SERVER...</div>
+    </div>
+
+    <div class="card" id="mainCard">
+        <div class="profile-wrapper">
+            <img src="https://ui-avatars.com/api/?name=J+G&background=de9b35&color=000&size=256&bold=true" alt="Junior Gaming" class="profile-img">
+            <div class="rank-badge">Global Elite</div>
+        </div>
+
+        <h1 class="gamernet-title" data-text="JUNIOR GAMING">JUNIOR GAMING</h1>
+        <div class="manager-name">روهام محمدی</div>
+
+        <div class="btn-container">
+            <a href="tel:09124656033" class="btn">
+                <span>تماس با ادمین</span>
+                <i class="fa-solid fa-headset" style="color: var(--cs-orange)"></i>
+            </a>
+
+            <a href="https://instagram.com/junior.gamingcenter" target="_blank" class="btn btn-insta">
+                <span>اینستاگرام</span>
+                <i class="fa-brands fa-instagram" style="color: #E1306C"></i>
+            </a>
+            
+            <a href="https://t.me/+989124656033" target="_blank" class="btn btn-tele">
+                <span>تلگرام</span>
+                <i class="fa-brands fa-telegram" style="color: #2AABEE"></i>
+            </a>
+
+            <a href="https://wa.me/989124656033" target="_blank" class="btn btn-whats">
+                <span>واتساپ</span>
+                <i class="fa-brands fa-whatsapp" style="color: #25D366"></i>
+            </a>
+        </div>
+
+        <button class="btn save-btn" onclick="saveContact()">
+            <i class="fa-solid fa-bomb"></i>
+            PLANT CONTACT
+        </button>
+
+        <div class="status-bar">
+            <span>PING: 5ms</span>
+            <span>FPS: 240</span>
+            <span>LOC: TEHRAN</span>
+        </div>
+    </div>
+
+    <script>
+        // لودینگ
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('preloader').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('preloader').style.display = 'none';
+                    document.getElementById('mainCard').classList.add('active');
+                }, 500);
+            }, 1500);
+        });
+
+        // ساخت مخاطب
+        function saveContact() {
+            const person = {
+                fn: "Roham Mohammadi",
+                org: "Junior Gaming Center",
+                tel: "+989124656033",
+                insta: "https://instagram.com/junior.gamingcenter",
+                note: "مدیریت گیم نت جونیور"
+            };
+
+            const vcard = `BEGIN:VCARD
+VERSION:3.0
+N:Mohammadi;Roham;;;
+FN:${person.fn}
+ORG:${person.org}
+TEL;TYPE=CELL:${person.tel}
+X-SOCIALPROFILE;TYPE=instagram:${person.insta}
+NOTE:${person.note}
+END:VCARD`;
+
+            const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'Junior_Gaming_Center.vcf';
+            link.click();
+        }
+    </script>
+</body>
+</html>
