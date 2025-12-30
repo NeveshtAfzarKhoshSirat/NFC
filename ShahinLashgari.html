@@ -2,245 +2,248 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>بازرگانی لشگری | شاهین لشگری</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#121212">
+<meta name="description" content="کارت ویزیت دیجیتال بازرگانی لشگری - واردات لوازم آرایشی و بهداشتی">
+<title>بازرگانی لشگری | Lashgari Trading</title>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.3/Vazirmatn.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-:root {
-    --primary-red: #b22222;
-    --accent-gold: #d4af37;
-    --bg-dark: #121212;
-    --glass-bg: rgba(255, 255, 255, 0.95);
-}
+    :root {
+        --primary-color: #b22222; /* قرمز زرشکی */
+        --gold-color: #d4af37;
+        --bg-dark: #121212;
+        --card-bg: rgba(255, 255, 255, 0.92);
+        --text-dark: #333;
+        --insta-gradient: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    }
 
-* {
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-}
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
 
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Vazirmatn', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    overflow: hidden;
-    /* بک‌گراند متحرک گرادینت */
-    background: linear-gradient(-45deg, #1a1a1a, #4a0e0e, #2c2c2c, #801b1b);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-}
+    body {
+        margin: 0; padding: 0;
+        font-family: 'Vazirmatn', sans-serif;
+        background: #121212;
+        background-image: 
+            radial-gradient(at 0% 0%, hsla(350,79%,29%,1) 0, transparent 50%), 
+            radial-gradient(at 100% 100%, hsla(45,67%,52%,1) 0, transparent 50%);
+        min-height: 100vh;
+        /* حل مشکل نوار ابزار متحرک در موبایل */
+        min-height: 100dvh; 
+        display: flex; justify-content: center; align-items: center;
+        overflow-x: hidden;
+    }
 
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
+    /* استایل کارت */
+    .card {
+        background: var(--card-bg);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        width: 90%; max-width: 400px;
+        border-radius: 30px;
+        padding: 40px 25px;
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        border: 1px solid rgba(255,255,255,0.2);
+        transform: translateY(20px); opacity: 0;
+        transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .card.active { transform: translateY(0); opacity: 1; }
 
-/* --- استایل لودینگ --- */
-#preloader {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-color: var(--bg-dark);
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: opacity 0.5s ease;
-}
+    /* هدر طلایی بالای کارت */
+    .card::before {
+        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 6px;
+        background: linear-gradient(90deg, var(--primary-color), var(--gold-color));
+    }
 
-.loader-spinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid #333;
-    border-top: 5px solid var(--primary-red);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
+    /* عکس پروفایل */
+    .profile-img-container {
+        width: 110px; height: 110px; margin: 0 auto 20px;
+        position: relative;
+    }
+    
+    .profile-img {
+        width: 100%; height: 100%; object-fit: cover;
+        border-radius: 50%;
+        border: 4px solid white;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    
+    .verify-badge {
+        position: absolute; bottom: 5px; right: 5px;
+        background: var(--gold-color); color: white;
+        width: 28px; height: 28px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 14px; border: 2px solid white;
+    }
 
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    /* متون */
+    h1 { font-size: 26px; color: var(--text-dark); margin: 5px 0; font-weight: 800; }
+    .job-title { color: var(--primary-color); font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+    .desc { font-size: 13px; color: #666; margin-bottom: 25px; line-height: 1.6; padding: 0 10px; }
 
-/* --- استایل کارت --- */
-.card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    border-radius: 25px;
-    padding: 40px 30px;
-    max-width: 380px;
-    width: 90%;
-    text-align: center;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-    border: 1px solid rgba(255,255,255,0.2);
-    transform: translateY(30px);
-    opacity: 0;
-    transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
+    /* دکمه‌های شبکه‌های اجتماعی (سطری) */
+    .social-row {
+        display: flex; justify-content: center; gap: 15px; margin-bottom: 25px;
+    }
 
-.card.show {
-    transform: translateY(0);
-    opacity: 1;
-}
+    .social-btn {
+        width: 50px; height: 50px; border-radius: 14px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 24px; color: white; text-decoration: none;
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    }
 
-.logo-area {
-    width: 80px;
-    height: 80px;
-    background: var(--primary-red);
-    color: white;
-    border-radius: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 40px;
-    margin: 0 auto 20px;
-    box-shadow: 0 10px 20px rgba(178, 34, 34, 0.3);
-}
+    .social-btn:hover { transform: translateY(-5px) scale(1.1); }
+    
+    .btn-insta { background: var(--insta-gradient); }
+    .btn-wa { background-color: #25D366; }
+    .btn-tg { background-color: #229ED9; }
 
-h1 {
-    font-size: 24px;
-    color: var(--primary-red);
-    margin: 0 0 5px 0;
-    font-weight: 900;
-}
+    /* دکمه‌های اصلی (ستونی) */
+    .action-list { display: flex; flex-direction: column; gap: 12px; }
 
-.subtitle {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 25px;
-    line-height: 1.6;
-}
+    .action-btn {
+        display: flex; align-items: center; justify-content: center; gap: 10px;
+        padding: 16px; border: none; border-radius: 15px;
+        font-family: 'Vazirmatn', sans-serif; font-size: 15px; font-weight: bold;
+        cursor: pointer; text-decoration: none; color: white;
+        transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
 
-.manager-name {
-    font-size: 18px;
-    color: #333;
-    background: #f0f0f0;
-    padding: 8px 15px;
-    border-radius: 50px;
-    display: inline-block;
-    margin-bottom: 25px;
-}
+    .action-btn:active { transform: scale(0.98); }
+    
+    .btn-call { background: #333; }
+    .btn-sms { background: white; color: #333; border: 1px solid #ddd; }
+    .btn-save { background: var(--primary-color); font-size: 16px; padding: 18px; animation: pulse 2s infinite; }
+    .btn-share { background: transparent; color: #777; font-size: 13px; box-shadow: none; margin-top: 5px; }
 
-/* دکمه‌های عملیاتی */
-.action-buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 15px;
-}
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(178, 34, 34, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(178, 34, 34, 0); } 100% { box-shadow: 0 0 0 0 rgba(178, 34, 34, 0); } }
 
-.btn {
-    padding: 12px 10px;
-    border: none;
-    border-radius: 12px;
-    font-family: 'Vazirmatn', sans-serif;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    text-decoration: none;
-    font-size: 14px;
-}
+    /* لودینگ */
+    #loader {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: #121212; z-index: 999;
+        display: flex; justify-content: center; align-items: center;
+        transition: opacity 0.5s;
+    }
+    .spinner { width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--primary-color); border-radius: 50%; animation: spin 1s infinite linear; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
 
-.btn-call { background-color: #28a745; color: white; }
-.btn-sms { background-color: #007bff; color: white; }
-.btn-save { 
-    background-color: var(--primary-red); 
-    color: white; 
-    grid-column: span 2; 
-    font-size: 16px;
-    padding: 15px;
-}
-
-.btn:hover { transform: translateY(-3px); filter: brightness(1.1); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-.btn:active { transform: scale(0.98); }
-
-footer {
-    margin-top: 20px;
-    font-size: 12px;
-    color: #999;
-}
 </style>
 </head>
 <body>
 
-    <div id="preloader">
-        <div class="loader-spinner"></div>
-    </div>
+    <div id="loader"><div class="spinner"></div></div>
 
     <div class="card" id="mainCard">
-        <div class="logo-area">
-            <i class="fa-solid fa-briefcase"></i>
-        </div>
-        
-        <h1>بازرگانی لشگری</h1>
-        <div class="subtitle">واردات و پخش عمده لوازم آرایشی و بهداشتی از چین و دبی</div>
-        
-        <div class="manager-name">
-            <i class="fa-solid fa-user-tie"></i> مدیریت: شاهین لشگری
+        <div class="profile-img-container">
+            <img src="https://ui-avatars.com/api/?name=Lashgari+Trading&background=b22222&color=fff&size=256&font-size=0.4" alt="Logo" class="profile-img">
+            <div class="verify-badge"><i class="fa-solid fa-check"></i></div>
         </div>
 
-        <div class="action-buttons">
-            <a href="tel:09120969129" class="btn btn-call">
+        <h1>بازرگانی لشگری</h1>
+        <div class="job-title">مدیریت: شاهین لشگری</div>
+        <div class="desc">واردات تخصصی و پخش عمده لوازم آرایشی و بهداشتی<br>از چین و دبی به سراسر ایران</div>
+
+        <div class="social-row">
+            <a href="https://instagram.com/lashgaribeauty" target="_blank" class="social-btn btn-insta">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="https://wa.me/989120969129" target="_blank" class="social-btn btn-wa">
+                <i class="fa-brands fa-whatsapp"></i>
+            </a>
+            <a href="https://t.me/+989120969129" target="_blank" class="social-btn btn-tg">
+                <i class="fa-brands fa-telegram"></i>
+            </a>
+        </div>
+
+        <div class="action-list">
+            <button class="action-btn btn-save" onclick="saveContact()">
+                <i class="fa-solid fa-user-plus"></i> ذخیره در مخاطبین
+            </button>
+            
+            <a href="tel:09120969129" class="action-btn btn-call">
                 <i class="fa-solid fa-phone"></i> تماس مستقیم
             </a>
-            <a href="sms:09120969129" class="btn btn-sms">
-                <i class="fa-solid fa-message"></i> ارسال پیامک
+            
+            <a href="sms:09120969129" class="action-btn btn-sms">
+                <i class="fa-solid fa-comment-dots"></i> ارسال پیامک
             </a>
-            <button id="saveBtn" class="btn btn-save">
-                <i class="fa-solid fa-user-plus"></i> ذخیره در مخاطبین (VCF)
+
+            <button class="action-btn btn-share" onclick="shareCard()">
+                <i class="fa-solid fa-share-nodes"></i> اشتراک‌گذاری کارت
             </button>
         </div>
-
-        <footer>Lashgari Trading &copy; 2026</footer>
     </div>
 
     <script>
-        // مدیریت لودینگ و نمایش کارت
+        // لودینگ
         window.addEventListener('load', () => {
-            const preloader = document.getElementById('preloader');
-            const card = document.getElementById('mainCard');
-            
             setTimeout(() => {
-                preloader.style.opacity = '0';
+                document.getElementById('loader').style.opacity = '0';
                 setTimeout(() => {
-                    preloader.style.display = 'none';
-                    card.classList.add('show');
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('mainCard').classList.add('active');
                 }, 500);
-            }, 1000); // یک ثانیه مکث برای زیبایی
+            }, 800);
         });
 
-        // تابع ذخیره مخاطب
-        document.getElementById("saveBtn").addEventListener("click", () => {
-            const vcard = `BEGIN:VCARD
-VERSION:3.0
-N:لشگری;بازرگانی;;;
-FN:بازرگانی لشگری
-ORG:بازرگانی لشگری
-TITLE:مدیریت: شاهین لشگری
-TEL;TYPE=CELL:+989120969129
-NOTE:واردات و پخش عمده لوازم آرایشی و بهداشتی از چین و دبی
-URL:https://lashgaritrading.com
-END:VCARD`;
+        // تابع ذخیره مخاطب (VCF پیشرفته)
+        function saveContact() {
+            const contact = {
+                fn: "بازرگانی لشگری",
+                n: "لشگری;شاهین;;;",
+                tel: "+989120969129",
+                email: "",
+                url: "https://instagram.com/lashgaribeauty",
+                note: "واردات و پخش عمده لوازم آرایشی و بهداشتی | Instagram: lashgaribeauty"
+            };
 
-            const blob = new Blob([vcard], {type: "text/vcard;charset=utf-8"});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "Shahin-Lashgari.vcf";
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(() => {
-                URL.revokeObjectURL(url);
-                a.remove();
-            }, 1000);
-        });
+            // ساخت فرمت استاندارد VCF
+            const vcard = [
+                'BEGIN:VCARD',
+                'VERSION:3.0',
+                `FN:${contact.fn}`,
+                `N:${contact.n}`,
+                `ORG:Lashgari Trading`,
+                `TITLE:مدیریت`,
+                `TEL;TYPE=CELL,VOICE:${contact.tel}`,
+                `URL;type=Instagram:${contact.url}`,
+                `URL;type=WhatsApp:https://wa.me/989120969129`,
+                `NOTE:${contact.note}`,
+                'END:VCARD'
+            ].join('\n');
+
+            const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'Lashgari_Trading.vcf';
+            link.click();
+        }
+
+        // تابع اشتراک‌گذاری (فقط در موبایل کار می‌کند)
+        async function shareCard() {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'بازرگانی لشگری',
+                        text: 'کارت ویزیت دیجیتال بازرگانی لشگری - واردات لوازم آرایشی',
+                        url: window.location.href
+                    });
+                } catch (err) {
+                    console.log('Error sharing:', err);
+                }
+            } else {
+                alert('لینک صفحه کپی شد: ' + window.location.href);
+            }
+        }
     </script>
 </body>
 </html>
