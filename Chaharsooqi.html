@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#121212">
+<meta name="description" content="کارت ویزیت دیجیتال مجتمع تخصصی چهارسوقی - تعمیرات تخصصی خودرو">
+<title>مجتمع تخصصی چهارسوقی | Chaharsooghi Motors</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.3/Vazirmatn.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    :root {
+        --primary-color: #b22222; /* قرمز زرشکی */
+        --gold-color: #d4af37;
+        --bg-dark: #121212;
+        --card-bg: rgba(255, 255, 255, 0.92);
+        --text-dark: #333;
+        --insta-gradient: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+
+    body {
+        margin: 0; padding: 0;
+        font-family: 'Vazirmatn', sans-serif;
+        background: #121212;
+        background-image: 
+            radial-gradient(at 0% 0%, hsla(350,79%,29%,1) 0, transparent 50%), 
+            radial-gradient(at 100% 100%, hsla(45,67%,52%,1) 0, transparent 50%);
+        min-height: 100vh;
+        /* حل مشکل نوار ابزار متحرک در موبایل */
+        min-height: 100dvh; 
+        display: flex; justify-content: center; align-items: center;
+        overflow-x: hidden;
+    }
+
+    /* استایل کارت */
+    .card {
+        background: var(--card-bg);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        width: 90%; max-width: 400px;
+        border-radius: 30px;
+        padding: 40px 25px;
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        border: 1px solid rgba(255,255,255,0.2);
+        transform: translateY(20px); opacity: 0;
+        transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .card.active { transform: translateY(0); opacity: 1; }
+
+    /* هدر طلایی بالای کارت */
+    .card::before {
+        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 6px;
+        background: linear-gradient(90deg, var(--primary-color), var(--gold-color));
+    }
+
+    /* عکس پروفایل */
+    .profile-img-container {
+        width: 110px; height: 110px; margin: 0 auto 20px;
+        position: relative;
+    }
+    
+    .profile-img {
+        width: 100%; height: 100%; object-fit: cover;
+        border-radius: 50%;
+        border: 4px solid white;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    
+    .verify-badge {
+        position: absolute; bottom: 5px; right: 5px;
+        background: var(--gold-color); color: white;
+        width: 28px; height: 28px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 14px; border: 2px solid white;
+    }
+
+    /* متون */
+    h1 { font-size: 26px; color: var(--text-dark); margin: 5px 0; font-weight: 800; }
+    .job-title { color: var(--primary-color); font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+    .desc { font-size: 13px; color: #666; margin-bottom: 25px; line-height: 1.6; padding: 0 10px; }
+
+    /* دکمه‌های شبکه‌های اجتماعی (سطری) */
+    .social-row {
+        display: flex; justify-content: center; gap: 15px; margin-bottom: 25px;
+    }
+
+    .social-btn {
+        width: 50px; height: 50px; border-radius: 14px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 24px; color: white; text-decoration: none;
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    }
+
+    .social-btn:hover { transform: translateY(-5px) scale(1.1); }
+    
+    .btn-insta { background: var(--insta-gradient); }
+    .btn-wa { background-color: #25D366; }
+    .btn-web { background-color: #333; }
+
+    /* دکمه‌های اصلی (ستونی) */
+    .action-list { display: flex; flex-direction: column; gap: 12px; }
+
+    .action-btn {
+        display: flex; align-items: center; justify-content: center; gap: 10px;
+        padding: 16px; border: none; border-radius: 15px;
+        font-family: 'Vazirmatn', sans-serif; font-size: 15px; font-weight: bold;
+        cursor: pointer; text-decoration: none; color: white;
+        transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .action-btn:active { transform: scale(0.98); }
+    
+    .btn-call { background: #333; }
+    .btn-map { background: #ea4335; } /* رنگ قرمز گوگل مپ */
+    .btn-sms { background: white; color: #333; border: 1px solid #ddd; }
+    .btn-save { background: var(--primary-color); font-size: 16px; padding: 18px; animation: pulse 2s infinite; }
+    .btn-share { background: transparent; color: #777; font-size: 13px; box-shadow: none; margin-top: 5px; }
+
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(178, 34, 34, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(178, 34, 34, 0); } 100% { box-shadow: 0 0 0 0 rgba(178, 34, 34, 0); } }
+
+    /* لودینگ */
+    #loader {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: #121212; z-index: 999;
+        display: flex; justify-content: center; align-items: center;
+        transition: opacity 0.5s;
+    }
+    .spinner { width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--primary-color); border-radius: 50%; animation: spin 1s infinite linear; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+</style>
+</head>
+<body>
+
+    <div id="loader"><div class="spinner"></div></div>
+
+    <div class="card" id="mainCard">
+        <div class="profile-img-container">
+            <img src="https://ui-avatars.com/api/?name=Chaharsooghi+Motors&background=b22222&color=fff&size=256&font-size=0.4" alt="Logo" class="profile-img">
+            <div class="verify-badge"><i class="fa-solid fa-check"></i></div>
+        </div>
+
+        <h1>مجتمع تخصصی چهارسوقی</h1>
+        <div class="job-title">مدیریت: رضا چهارسوقی</div>
+        <div class="desc">بیش از ۱۵ سال سابقه تخصصی در حوزه تعمیرات خودرو<br>ارائه بالاترین کیفیت با منصفانه‌ترین اجرت</div>
+
+        <div class="social-row">
+            <a href="https://www.instagram.com/tamirgah.4sooghi" target="_blank" class="social-btn btn-insta">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="https://api.whatsapp.com/send?phone=989122251405" target="_blank" class="social-btn btn-wa">
+                <i class="fa-brands fa-whatsapp"></i>
+            </a>
+            <a href="https://chaharsooghimotors.com" target="_blank" class="social-btn btn-web">
+                <i class="fa-solid fa-globe"></i>
+            </a>
+        </div>
+
+        <div class="action-list">
+            <button class="action-btn btn-save" onclick="saveContact()">
+                <i class="fa-solid fa-user-plus"></i> ذخیره در مخاطبین
+            </button>
+            
+            <a href="tel:09122251405" class="action-btn btn-call">
+                <i class="fa-solid fa-phone"></i> تماس با مدیریت
+            </a>
+
+            <a href="https://maps.app.goo.gl/oXUpx5z6faMU4GUY8" target="_blank" class="action-btn btn-map">
+                <i class="fa-solid fa-map-location-dot"></i> مسیریابی تعمیرگاه
+            </a>
+            
+            <a href="sms:09122251405" class="action-btn btn-sms">
+                <i class="fa-solid fa-comment-dots"></i> ارسال پیامک
+            </a>
+
+            <button class="action-btn btn-share" onclick="shareCard()">
+                <i class="fa-solid fa-share-nodes"></i> اشتراک‌گذاری کارت
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // لودینگ
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('mainCard').classList.add('active');
+                }, 500);
+            }, 800);
+        });
+
+        // تابع ذخیره مخاطب (VCF پیشرفته)
+        function saveContact() {
+            const contact = {
+                fn: "مجتمع تخصصی چهارسوقی",
+                n: "چهارسوقی;رضا;;;",
+                tel1: "+989122251405",
+                tel2: "+989022251405",
+                tel3: "+989102049515",
+                url: "https://chaharsooghimotors.com",
+                insta: "https://instagram.com/tamirgah.4sooghi",
+                note: "مجتمع تخصصی چهارسوقی با بیش از 15 سال سابقه در حوزه تعمیرات خودرو. ایجاد محیط امن و قابل اعتماد با بالاترین کیفیت و کمترین اجرت."
+            };
+
+            // ساخت فرمت استاندارد VCF
+            const vcard = [
+                'BEGIN:VCARD',
+                'VERSION:3.0',
+                `FN:${contact.fn}`,
+                `N:${contact.n}`,
+                `ORG:Chaharsooghi Motors`,
+                `TITLE:مدیریت`,
+                `TEL;TYPE=CELL,VOICE:${contact.tel1}`,
+                `TEL;TYPE=CELL,VOICE:${contact.tel2}`,
+                `TEL;TYPE=CELL,VOICE:${contact.tel3}`,
+                `URL;type=Website:${contact.url}`,
+                `URL;type=Instagram:${contact.insta}`,
+                `URL;type=WhatsApp:https://wa.me/989122251405`,
+                `NOTE:${contact.note}`,
+                'END:VCARD'
+            ].join('\n');
+
+            const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'Chaharsooghi_Motors.vcf';
+            link.click();
+        }
+
+        // تابع اشتراک‌گذاری (فقط در موبایل کار می‌کند)
+        async function shareCard() {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'مجتمع تخصصی چهارسوقی',
+                        text: 'کارت ویزیت دیجیتال مجتمع تخصصی چهارسوقی - تعمیرات تخصصی خودرو',
+                        url: window.location.href
+                    });
+                } catch (err) {
+                    console.log('Error sharing:', err);
+                }
+            } else {
+                alert('لینک صفحه کپی شد: ' + window.location.href);
+            }
+        }
+    </script>
+</body>
+</html>
